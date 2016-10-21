@@ -12,9 +12,9 @@ In this document I am going to provide:
 
 ## Free-response questions
 <br>
-<br>
-> *Summarize for us the goal of this project and how machine learning 
-is useful in trying to accomplish it.*
+
+### Summarize for us the goal of this project and how machine learning 
+is useful in trying to accomplish it
 
 The goal of this project is that of building a classification model that is able to classify an Enron employee
 as a *Person of Interest* (POI), i.e. a person who was involved in the 
@@ -41,11 +41,10 @@ completely removed from the final dataset. They are:
 | LOCKHART EUGENE E             | Apart from the name, there is no data for this person.        |
 | THE TRAVEL AGENCY IN THE PARK | It doesn't seem an Enron employee :)                          |
 
-
 <br>
 <br>
 
-> *What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not?* 
+### What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not?*
 
 First of all, I have created **9 new variables** in the dataset. They are:
 * *exercised_ratio*, i.e. exercised stock options as a proportion of salary;
