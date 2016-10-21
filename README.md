@@ -15,23 +15,23 @@ In this document I am going to provide:
 > *Summarize for us the goal of this project and how machine learning 
 is useful in trying to accomplish it.*
 
-The goal of this project is that of building a Machine Learning (ML) 
-algorithm that is able to classify an Enron employee
+The goal of this project is that of building a classification model that is able to classify an Enron employee
 as a *Person of Interest* (POI), i.e. a person who was involved in the 
 Enron accounting scandal. The classification is binary,
-i.e. a person is either a POI or is not.
+i.e. a person is either a POI or is not. In this context, an ML algorithm is a great tool to build a predictive model, withouth being constrained to any parametric models. ML also allows me to evaluate the performance/quality of the predictions and, most importanly, to optimise the model given some metrics I would like to maximise.
 <br>The dataset is the form of a Python dictionary, where for every 
 key (i.e. the name of an employee) there is a dictionary of values,
 including financial and message-related variables. The original 
 dataset is made of 146 observations, of which **only 18** are
 actual POIs. The dataset, therefore, is very unbalanaced.
+<br>The original dataset has 14 financial variables (e.g. salary, bonust, etc.), 6 messages variables (e.g. number of emails sent, number of emails received, etc.) and 1 labelling features (POI or non POI).
 <br>
 <br>
 As I showed in the *Outlier Identificatio* file (availabel as Jupyter
 notebook or html), I have identified six outliers which I have 
 completely removed from the final dataset. They are:
 
-| Name                          | Reason                                                        |
+| Name                          | Rational for removal                                                        |
 |-------------------------------|---------------------------------------------------------------|
 | TOTAL                         | This observation is actually the sum of all the previous ones |
 | SHAPIRO RICHARD S             | Incredibly high number of messages sent                       |
@@ -41,5 +41,9 @@ completely removed from the final dataset. They are:
 | THE TRAVEL AGENCY IN THE PARK | It doesn't seem an Enron employee :)                          |
 
 
+<br>
+<br>
+
+> *What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not?*
 ### Links
 MD table generator: http://www.tablesgenerator.com/markdown_tables 
