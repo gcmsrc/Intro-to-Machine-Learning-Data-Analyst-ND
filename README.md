@@ -65,6 +65,7 @@ The variables I ended up using are:
 | 'sqrt_exercised_stock_options' | Yes | Float, sqrt transformation of exercised stock options                                                                                     |
 
 Once I have created and added new variables to the dataset (part of the dict_parser module), I   extracted only those for which the proportion of missing values (i.e. NaN) is below 50% (I have built a function in the dict_parser module called *extract_fields_for_ml*). Variables which have more than 50% of missing values are disregarded.
+<br>
 I then perform an ANOVA test on these features vs the label (i.e. POI or non POI). I do a SelectKBest on all features (kind of a shortcut), and ordered the variables by F score (and p-value). Values that have a p-value below 5% for the ANOVA test have been disregarded. This means removing values for which, on average, there is no difference between POIs and non POIs.
 Also, I only choose the sqrt-transformation for wealth and removed *wealth* and *log_wealth* (I keep the *wealth* variable with the highest F score).
 
