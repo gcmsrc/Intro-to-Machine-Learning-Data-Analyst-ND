@@ -10,6 +10,15 @@ In this document I am going to provide:
 * instructions on how to navigate through this repository;
 * answers to the *free-response* questions asked [here](https://docs.google.com/document/d/1NDgi1PrNJP7WTbfSUuRUnz8yzs5nGVTSzpO7oeNTEWA/pub?embedded=true).
 
+## Instructions
+This repository is built as follows:
+* *data*, i.e. a folder with original dataset, dumped dataset and classifier;
+* *eda*, i.e. a folder with the EDA analysis I have performed on the dataset;
+* *notebooks*, i.e. a folder with some Jupyter notebooks. The *Classification* notebook is very comprehnsive and covers all the steps I took while building the classifier;
+* *scripts*, i.e. main scripts;
+* *tools*, i.e. supporting scripts.
+
+
 ## Free-response questions
 ### Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it
 
