@@ -7,8 +7,8 @@ submission for the Intro to Machine Learning Project
 of Udacity Data Analyst Nanodegree.
 
 In this document I am going to provide:
-* answers to the *free-response* questions asked [here](https://docs.google.com/document/d/1NDgi1PrNJP7WTbfSUuRUnz8yzs5nGVTSzpO7oeNTEWA/pub?embedded=true);
-* instructions on how to navigate through this repository.
+* instructions on how to navigate through this repository;
+* answers to the *free-response* questions asked [here](https://docs.google.com/document/d/1NDgi1PrNJP7WTbfSUuRUnz8yzs5nGVTSzpO7oeNTEWA/pub?embedded=true).
 
 ## Free-response questions
 ### Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it
@@ -65,6 +65,9 @@ The variables I ended up using are:
 | 'sqrt_exercised_stock_options' | Yes | Float, sqrt transformation of exercised stock options                                                                                     |
 
 I started by creating some new variables (see table above and Classification notebook).
+<br>One of the variable is what I call *wealth*, which is simply the sum of most of the financial variables. I noticed in fact that financial variables are in general quite correlated (e.g. a higher salary usually means a higher bonus). In the end I am using the sqrt transformation of wealth, since it is more normally distributed due to high negative skewness otherwise (see EDA html file).
+<br>For messages variables, I created a series of ratio which, in my intention, normalise these features. For example, the *to_poi_ratio* is the ratio between the absolute number of emails sent to poi and the total number of email sent. In this way, observations become comparable.
+<br>
 <br>
 I only keep variables for which the percentage of missing values (i.e. NaN) is below 50% - I have actually built a function in dict_parser module called *extract_fields_for_ml* that does exactly that.
 <br>
