@@ -11,7 +11,8 @@ In this document I am going to provide:
 * instructions on how to navigate through this repository.
 
 ## Free-response questions
-
+<br>
+<br>
 > *Summarize for us the goal of this project and how machine learning 
 is useful in trying to accomplish it.*
 
@@ -44,6 +45,24 @@ completely removed from the final dataset. They are:
 <br>
 <br>
 
-> *What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not?*
+> *What features did you end up using in your POI identifier, and what selection process did you use to pick them? Did you have to do any scaling? Why or why not?* 
+
+First of all, I have created **9 new variables** in the dataset. They are:
+* *exercised_ratio*, i.e. exercised stock options as a proportion of salary;
+* *wealth*, i.e. the sum of other financial variables, i.e. the sum of salary, total payments, bonus, total stock value, expenses, restricted stock and other (almost the sum of all financial variables);
+* *from_poi_ratio*, i.e. the number of emails received from POI(s) as a proportion of total number of emails received;
+* *to_poi_ratio*, i.e. the the number of emails sent to POI(s) as a proportion of total number of emails sent;
+* *shared_with_poi_ratio*, i.e. the number of emails received and shared with at least one POI as a proportion of total number of emails received;
+* *log10* and *sqrt* transformations of the variables *wealth* and *exercised_stock_options*.
+
+Once I have created and added these variables to the dataset, I only  extract those for which the proportion of missing values (i.e. NaN) is below 50% (I have built a function in the dict_parser module called *extract_fields_for_ml*). Variables which have more than 50% of missing values are disregarded.
+
+I then perform an ANOVA test on these features vs the label (i.e. POI or non POI). I do a SelectKBest on all features (kind of a shortcut), and ordered the variables by F score (and p-value). Values that have a p-value below 5% for the ANOVA test have been disregarded. This means removing values for which, on average, there is no difference between POIs and non POIs.
+Also, I only choose the sqrt-transformation for wealth and removed *wealth* and *log_wealth* (I keep the *wealth* variable with the highest F score).
+
+Since I am using algorithms such as SVM and K-means, I am scaling all the features with MinMaxScaler.
+
+
+
 ### Links
 MD table generator: http://www.tablesgenerator.com/markdown_tables 
