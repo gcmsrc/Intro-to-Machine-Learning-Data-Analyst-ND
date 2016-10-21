@@ -16,6 +16,6 @@ In this document I am going to provide:
 The goal of this project is that of building a Machine Learning (ML) algorithm that is able to classify an Enron employee
 as a *Person of Interest* (POI), i.e. a person who was involved in the Enron accounting scandal. The classification is binary,
 i.e. a person is either a POI or is not.
-The dataset is the form of a Python dictionary, where for every key (i.e. the name of an employee) there is a dictionary of values,
+<br>The dataset is the form of a Python dictionary, where for every key (i.e. the name of an employee) there is a dictionary of values,
 including financial and message-related variables. The original dataset is made of 146 observations, of which **only 18** are
 actual POIs. The dataset, therefore, is very unbalanaced. 
