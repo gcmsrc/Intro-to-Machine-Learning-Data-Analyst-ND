@@ -64,12 +64,13 @@ The variables I ended up using are:
 | 'exercised_stock_options'      | No  | Float, exercised stock options (USD)                                                                                                      |
 | 'sqrt_exercised_stock_options' | Yes | Float, sqrt transformation of exercised stock options                                                                                     |
 
-Once I have created and added new variables to the dataset (part of the dict_parser module), I   extracted only those for which the proportion of missing values (i.e. NaN) is below 50% (I have built a function in the dict_parser module called *extract_fields_for_ml*). Variables which have more than 50% of missing values are disregarded.
+I started by creating some new variables (see table above and Classification notebook).
 <br>
-I then perform an ANOVA test on these features vs the label (i.e. POI or non POI). I do a SelectKBest on all features (kind of a shortcut), and ordered the variables by F score (and p-value). Values that have a p-value below 5% for the ANOVA test have been disregarded. This means removing values for which, on average, there is no difference between POIs and non POIs.
-Also, I only choose the sqrt-transformation for wealth and removed *wealth* and *log_wealth* (I keep the *wealth* variable with the highest F score).
-
-Since I am using algorithms such as SVM and K-means, I am scaling all the features with MinMaxScaler. 
+I only keep variables for which the percentage of missing values (i.e. NaN) is below 50% - I have actually built a function in dict_parser module called *extract_fields_for_ml* that does exactly that.
+<br>
+I then do an ANOVA test of these features vs the label (i.e. POI or not). I did it using SelectKBest (kind of a shortcut) and kept variables whose p-value is below 5%.
+<br>
+Since I have used algorithms such as SVM and K-Means, I have scaled all the features using *MinMaxScaler*. Scaling allows me to remove any influence due to values which are represented in different scale (e.g. wealth can reach millions of USD, while a percentage will have a much narrower range of values).
 
 
 
