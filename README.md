@@ -11,7 +11,6 @@ In this document I am going to provide:
 * instructions on how to navigate through this repository.
 
 ## Free-response questions
-<br>
 ### Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it
 
 The goal of this project is that of building a classification model that is able to classify an Enron employee
