@@ -13,16 +13,15 @@ In this document I am going to provide:
 ## Free-response questions
 ### Summarize for us the goal of this project and how machine learning is useful in trying to accomplish it
 
-The goal of this project is that of building a classification model that is able to classify an Enron employee
-as a *Person of Interest* (POI), i.e. a person who was involved in the 
-Enron accounting scandal. The classification is binary,
-i.e. a person is either a POI or is not. In this context, an ML algorithm is a great tool to build a predictive model, withouth being constrained to any parametric models. ML also allows me to evaluate the performance/quality of the predictions and, most importanly, to optimise the model given some metrics I would like to maximise.
-<br>The dataset is the form of a Python dictionary, where for every 
+The goal of this project is that of building a model that classifies an Enron employee as a *Person of Interest* (POI), i.e. a person who was involved in the Enron accounting scandal. The classification is binary,
+i.e. a person is either a POI or is not.
+<br>In this context, a ML algorithm is a great tool to build a predictive model, withouth being constrained by any parametric model. ML also allows to evaluate the performance/quality of the predictions and, most importanly, to optimise the model on specific performance metrics.
+<br>The dataset is a Python dictionary, where for every 
 key (i.e. the name of an employee) there is a dictionary of values,
 including financial and message-related variables. The original 
 dataset is made of 146 observations, of which **only 18** are
 actual POIs. The dataset, therefore, is very unbalanaced.
-<br>The original dataset has 14 financial variables (e.g. salary, bonust, etc.), 6 messages variables (e.g. number of emails sent, number of emails received, etc.) and 1 labelling features (POI or non POI).
+<br>There are 14 financial variables (e.g. salary, bonust, etc.), 6 messages variables (e.g. number of emails sent, number of emails received, etc.) and 1 labelling features (POI or non POI).
 <br>
 <br>
 As I showed in the *Outlier Identificatio* file (availabel as Jupyter
@@ -65,13 +64,13 @@ The variables I ended up using are:
 | 'sqrt_exercised_stock_options' | Yes | Float, sqrt transformation of exercised stock options                                                                                     |
 
 I started by creating some new variables (see table above and Classification notebook).
-<br>One of the variable is what I call *wealth*, which is simply the sum of most of the financial variables. I noticed in fact that financial variables are in general quite correlated (e.g. a higher salary usually means a higher bonus). In the end I am using the sqrt transformation of wealth, since it is more normally distributed due to high negative skewness otherwise (see EDA html file).
-<br>For messages variables, I created a series of ratio which, in my intention, normalise these features. For example, the *to_poi_ratio* is the ratio between the absolute number of emails sent to poi and the total number of email sent. In this way, observations become comparable.
+<br>One of the variable is what I call *wealth*, which is simply the sum of most financial variables. I noticed, in fact, that financial features are in general quite correlated so I wanted to try a new feature which is just their sum.
+<br>For messages variables, I created a series of ratios which, in my intention, should normalise these features. For example, the *to_poi_ratio* is the ratio between the absolute number of emails sent to poi and the total number of email sent. In this way, observations become comparable.
 <br>
 <br>
 I only keep variables for which the percentage of missing values (i.e. NaN) is below 50% - I have actually built a function in dict_parser module called *extract_fields_for_ml* that does exactly that.
 <br>
-I then do an ANOVA test of these features vs the label (i.e. POI or not). I did it using SelectKBest (kind of a shortcut) and kept variables whose p-value is below 5%.
+I did an ANOVA test on all the original features vs the label (i.e. POI or not). I did it using SelectKBest (kind of a shortcut) and kept variables whose p-value is below 5% (this is the list at the beginning of this paragraph).
 <br>
 Since I have used algorithms such as SVM and K-Means, I have scaled all the features using *MinMaxScaler*. Scaling allows me to remove any influence due to values which are represented in different scale (e.g. wealth can reach millions of USD, while a percentage will have a much narrower range of values).
 
