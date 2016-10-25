@@ -56,11 +56,11 @@ def test_classifier(cv,
             elif prediction == 1 and truth == 1:
                 true_positives += 1
             
-    try:
-        total_predictions = true_negatives + false_negatives + false_positives + true_positives
-        accuracy = 1.0*(true_positives + true_negatives)/total_predictions
-        precision = 1.0*true_positives/(true_positives+false_positives)
-        recall = 1.0*true_positives/(true_positives+false_negatives)
-        f1 = 2.0 * true_positives/(2*true_positives + false_positives+false_negatives)
-        
+    
+    total_predictions = true_negatives + false_negatives + false_positives + true_positives
+    accuracy = 1.0*(true_positives + true_negatives)/total_predictions
+    precision = 1.0*true_positives/(true_positives+false_positives)
+    recall = 1.0*true_positives/(true_positives+false_negatives)
+    f1 = 2.0 * true_positives/(2*true_positives + false_positives+false_negatives)
+
     return [accuracy, precision, recall, f1]
