@@ -79,12 +79,13 @@ I only keep variables for which the percentage of missing values (i.e. `NaN`) is
 <br>
 I did an ANOVA test on all the original features vs the label (i.e. poi or not). I did it using `SelectKBest` (kind of a shortcut) and kept variables whose p-value is below 5% (this is the list at the beginning of this paragraph).
 <br>
-Since I have used algorithms such as SVM and K-Means, I have scaled all the features using `MinMaxScaler`. Scaling allows me to remove any influence due to values which are represented in different scale (e.g. wealth can reach millions of USD, while a percentage will have a much narrower range of values).
+Since I have used algorithms like SVM, I have scaled all the features using `MinMaxScaler`. Scaling allows me to remove any influence due to values which are represented in different scale (e.g. wealth can reach millions of USD, while a percentage will have a much narrower range of values).
 
 <br>
 
 ### What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?
 
+Mention weighing of classes..
 
 
 
