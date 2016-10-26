@@ -6,10 +6,10 @@
     a list of scores.
 
 """
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.cross_validation import StratifiedShuffleSplit
 
-
-def test_classifier(cv,
-                    clf_best,
+def test_classifier(clf_best,
                     features,
                     labels):
 
@@ -19,7 +19,6 @@ def test_classifier(cv,
         a list with its performance metrics.
 
         Args:
-            - cv: a cross-validation object
             - clf_best: a classifier
             - features, labels: array of features,
                                 labels extracted from
@@ -27,6 +26,11 @@ def test_classifier(cv,
 
     """
     
+    cv = StratifiedShuffleSplit(labels, 1000, random_state=42)
+
+    scaler = MinMaxScaler()
+    features = scaler.fit_transform(features)
+
     true_negatives = 0
     false_negatives = 0
     true_positives = 0
