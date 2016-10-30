@@ -198,10 +198,10 @@ def write_dictionary(dataframe):
 # transform it into a new dictionary without outliers and 
 # with added features.
 
-def parse_dictionary(data_dict,
-                     outliers,
-                     adder_dictionary, 
-                     log_sqrt = None):
+def parse(data_dict,
+          outliers,
+          adder_dictionary, 
+          log_sqrt = None):
     
     """
         

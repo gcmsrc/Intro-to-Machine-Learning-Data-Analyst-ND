@@ -1,0 +1,314 @@
+---
+title: "Enron EDA"
+author: "Giacomo Sarchioni"
+date: "23 October 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+# Introduction
+This document contains the **Exploratory Data Analysis** of the Enron dataset.
+
+```{r}
+setwd('/Users/gsarchioni/Desktop/Study/Data Analyst Nanodegree/Lesson6/ud120-projects/submission/eda')
+```
+
+
+```{r}
+library(ggplot2)
+library(gridExtra)
+```
+
+```{r}
+df = read.csv('enron.csv')
+df$poi = as.factor(df$poi)
+```
+
+# Exploration
+### Univariate analysis
+```{r}
+plot_hist <- function(variable) {
+  
+  ggplot(data = df,
+         aes_string(variable)) +
+    geom_histogram() +
+    theme(plot.margin = unit(c(0.5, 0.5, 0.5, 0.5), 'cm'),
+          axis.title = element_text(size = 20))
+}
+```
+
+```{r}
+histograms <- list()
+variables = names(df)[-c(1,2,18,22)]
+
+for(i in 1:length(variables)) {
+  chart <- plot_hist(variables[i])
+  histograms[[i]] <- chart
+}
+
+```
+It is quite evident how most of the distributions are positively skewed. This makes sense since the variables represent numerical concepts (e.g. salary, bonuses, but even e-mails sent and received) which typically follow such distributions. Most of the observations have medium-low values, while some few cases are far in the right tail.
+```{r fig.width=20, fig.height=16}
+do.call(grid.arrange,
+        c(histograms, ncol = 4))
+```
+
+Given the shapes of the distributions, it is worhted to have a look at how transformed distributions (e.g. sqrt and log10) look like. I might do some rescaling at this stage instead of waiting to do it later on during the fitting of features for machine learning algorithms.  
+Let me start with **log10** transformations. It is evident how distributions now look more symmetrical.
+```{r fig.width=20, fig.height=16}
+logs <- list()
+variables = names(df)[-c(1,2,18,22)]
+for(i in 1:length(variables)) {
+  chart <- plot_hist(variables[i])
+  chart = chart +
+    scale_x_continuous(trans = 'log10')
+  logs[[i]] <- chart
+}
+
+do.call(grid.arrange,
+        c(logs, ncol = 4))
+```
+
+I now do the same with **sqrt** transformations. This transformation seems to work very well with the variable salary.
+```{r fig.width=20, fig.height=16}
+sqrts <- list()
+variables = names(df)[-c(1,2,18,22)]
+for(i in 1:length(variables)) {
+  chart <- plot_hist(variables[i])
+  chart = chart +
+    scale_x_continuous(trans = 'sqrt')
+  sqrts[[i]] <- chart
+}
+
+do.call(grid.arrange,
+        c(sqrts, ncol = 4))
+```
+
+### Bivariate analyis
+In this section I will plot some features against each other and comment on some possible relationshisp. This should serve as a kind of "inspirational" exercise in order to inform my decision thinking with regards to the creation of new variables.
+```{r}
+plot_bivariate <- function(df, indip, depen, xtrans = NULL, ytrans = NULL) {
+  
+  chart <- ggplot(data = df,
+                  aes_string(x = indip, y = depen)) +
+    geom_point(aes(color = poi)) +
+    scale_color_manual(values = c('blue', 'red'))
+  
+  if(!is.null(xtrans) & !is.null(ytrans)) {
+    chart <- chart +
+      scale_x_continuous(trans = xtrans) +
+      scale_y_continuous(trans = ytrans)
+  } else if(!is.null(xtrans) & is.null(ytrans)) {
+    chart <- chart +
+      scale_x_continuous(trans = xtrans)
+  } else if(is.null(xtrans) & !is.null(ytrans)) {
+    chart <- chart +
+      scale_y_continuous(trans = ytrans)
+  }
+  
+  return(chart)
+  
+}
+```
+
+#### Salary vs Bonus
+The chart below shows the relationship between salary (sqrt-transformed) and bonus (log10-transformed). It is evident how these two variables tell a story. Except for a single observation, all POIs have a bonus above (approximately) 550k USD.
+```{r}
+chart <- plot_bivariate(df, 'salary', 'bonus', xtrans = 'sqrt', ytrans = 'log10')
+chart +
+  labs(x = 'salary (sqrt)',
+       y = 'bonus (log10)') +
+  geom_hline(yintercept = 0.55 * 1e+06,
+             linetype = 2,
+             size = 0.25) +
+  annotate('text',
+           x = 900000,
+           y = 0.7 * 1e+06,
+          label = '0.55M USD')
+```
+
+#### Salary vs total stock value
+The salary (sqrt-transformed) vs totak stock value (log10-transformed) chart does not seem to bring any significant evidence. 
+
+```{r}
+chart <- plot_bivariate(df, 'salary', 'total_stock_value', xtrans = 'sqrt', ytrans = 'log10')
+chart + 
+  labs(x = 'salary (sqrt)',
+       y = 'total stock value (log10)') 
+```
+
+#### Messages sent vs received
+An interesting chart here. First of all, there seems to be a positive relationship between number of messages sent and number of messages received.  
+It also seems that, with the exception of one value, all POIs have received at least 1,000 messags (approximately)
+```{r}
+chart <- plot_bivariate(df, 'from_messages', 'to_messages', 'log10', 'log10')
+chart +
+  labs(x = 'sent messages (log10)',
+       y = 'received messages (log10)') +
+  geom_smooth(colour = 'grey',
+              fill = 'light grey',
+              alpha = 0.3) +
+  geom_hline(yintercept = 1000,
+             linetype = 2,
+             size = 0.25) +
+  theme(panel.background = element_blank(),
+        panel.grid.major = element_line(colour = 'grey',
+                                        size = 0.1))
+```
+
+## New variables
+I am now going to explore possible new variables. In particular, I am calculating ratios of existing variables. This will allow to capture me proportios rather than absolute values.
+
+### Financial variables
+#### Bonus ratio
+This variable expresses the bonus as a proportion of salary.
+```{r}
+df$bonus_ratio <- with(df,
+                       ifelse(!is.na(bonus) & !is.na(salary),
+                              bonus/salary,
+                              NaN))
+```
+
+#### Exercised stock ratio
+This variable expresses the value of exercised stock as a proportion of total stock.
+```{r}
+df$exercised_ratio <- with(df,
+                           ifelse(!is.na(exercised_stock_options) &
+                                    !is.na(total_stock_value),
+                                  exercised_stock_options / total_stock_value,
+                                  NaN))
+```
+
+#### Payments ratio
+The payments_ratio represents the amount of payments as a proportion of salary.  
+Spotted another outlier! There is a person with a huge expenses ratio. This person has expenses which are almost 2,000 times his salary.
+
+
+```{r}
+df$payments_ratio <- with(df,
+                           ifelse(!is.na(total_payments) &
+                                    !is.na(salary),
+                                  total_payments / salary,
+                                  NaN))
+```
+
+```{r}
+outlier_payment <- subset(df, payments_ratio > 1500)$name
+
+plot_bivariate(df, 'payments_ratio', 'expenses') +
+  annotate('text',
+           x = 1600,
+           y = 75000,
+           label = outlier_payment,
+           size = 3)
+```
+
+#### Expenses ratio
+This variable represents the amount of expenses as a proportion of salary.  
+Again, there seems to be an outliere here too, which is the same James Bannantine as before.
+
+
+```{r}
+df$expenses_ratio <- with(df,
+                           ifelse(!is.na(expenses) &
+                                    !is.na(salary),
+                                  expenses/ salary,
+                                  NaN))
+```
+
+```{r}
+outlier_expense <- subset(df, expenses_ratio > 100)$name
+```
+
+```{r}
+plot_bivariate(df, 'expenses_ratio', 'payments_ratio') +
+  annotate('text',
+           x = 100,
+           y = 1800,
+           label = outlier_expense,
+           size = 3)
+```
+
+#### Wealth variable
+I am also adding a simple feature which represents the total wealth of a person as a result of woring/having worked for Enron. This variable is the sum of salary, bonus and total stock value.  
+Note that in the final code I will have to transform NaN values into zero, otherwise wealth (as sum of three variables) might not be calculated correctly.
+
+
+```{r}
+# Create temporary salary, bonus and total_stock value
+# where nan values are replaced by zero.
+
+df$salary_replaced <- df$salary
+df$bonus_replaced <- df$bonus
+df$stock_replaced <- df$total_stock_value
+
+# Replace with zero
+df$salary_replaced[is.na(df$salary_replaced)] <- 0
+df$bonus_replaced[is.na(df$bonus_replaced)] <- 0
+df$stock_replaced[is.na(df$stock_replaced)] <- 0
+
+# Add wealth
+df$wealth <- with(df, salary_replaced + bonus_replaced + stock_replaced)
+
+# Remove temporary column
+drop <- c('salary_replaced', 'bonus_replaced', 'stock_replaced')
+df <- df[,!(names(df)) %in% drop]
+
+```
+
+
+#### Plotting new financial variables
+In order to represent these charts, I am going to create a new dataframe where I exclude James Bannantine.
+```{r echo = TRUE}
+new_df <- subset(df, name != 'BANNANTINE JAMES M')
+```
+
+The chart below shows that Kenneth Lay has an extraordinary high payments_ratio (i.e. he received payments of almost 100 times his salary). Since he is a POI, though, I will not remove it from the dataset.
+```{r}
+name <- subset(new_df, payments_ratio > 50 & !is.na(expenses_ratio))$name
+plot_bivariate(new_df, 'payments_ratio', 'expenses_ratio') +
+  annotate('text',
+           x = 96,
+           y = 0.15,
+           label = name,
+           size = 3)
+```
+
+
+
+### Messages proportions
+For the messagees variable, I am going to create some simple variables which represent the interaction with poi.
+
+#### from_poi_ratio
+This variable represents the proportion of e-mail which has been received from a poi out of the total e-mails received.
+```{r}
+df$from_poi_ratio <- with(df,
+                          from_poi_to_this_person / to_messages)
+```
+
+#### to_poi_ratio
+This variable represents the proportion of e-mail which has been sent to a poi out of the total e-mails sent.
+```{r}
+df$to_poi_ratio <- with(df,
+                        from_this_person_to_poi / from_messages)
+```
+
+#### shared_with_poi_ratio
+This variable represents the proportion of e-mail which has been received together with one poi at least, ouf of the total e-mails received.
+```{r}
+df$shared_with_poi_ratio <- with(df,
+                                 shared_receipt_with_poi / to_messages)
+```
+
+#### Plotting new messages variable
+These charts are extremely interesting. If I cut the plot with some horizontal lines, it is evident how poi seem to send at least 23% of their email to other pois. In addition, of all the e-mails they receive, at least 35% of them are shared with poi.  
+  
+This will be good material to test in the final algorithms.
+```{r}
+plot_bivariate(df, 'to_poi_ratio', 'shared_with_poi_ratio')
+```
+
+

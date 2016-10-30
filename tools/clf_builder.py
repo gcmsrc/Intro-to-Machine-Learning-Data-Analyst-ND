@@ -6,29 +6,34 @@
 """
 
 import re
+from sklearn.preprocessing import MinMaxScaler
+from sklearn.pipeline import Pipeline, make_pipeline
+from sklearn.decomposition import PCA
+
 
 ################################################
 ### CLASSIFIER FORMATTING ###
 
-
 def name_extractor(clf, compiler = re.compile(r'(\w+)(\(+).*')):
 
-	"""
-    
-        This function returns the name of the classifier as a string.
-        
+    """
+
+        This function return the name of the classifier as a string.
+
         Args:
             - clf: a classifier object
-            
+            - compliler: a regex compiler
+
         Returns:
             - clf_name: a string
-    
+
     """
-    
+
     clf_name = compiler.match(str(clf)).group(1)
-    
+
     return clf_name
 
+    
 
 def dict_builder(clf, params):
     
@@ -48,7 +53,7 @@ def dict_builder(clf, params):
     
     """
     
-    clf_dict = {'name' : clf_name_extractor(clf),
+    clf_dict = {'name' : name_extractor(clf),
                 'classifier' : clf,
                 'params': params}
     
