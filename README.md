@@ -51,6 +51,7 @@ completely removed from the final dataset. They are:
 
 The variables I ended up using are:
 
+
 | Variable                       | New | Definition                                                                                                                                |
 |--------------------------------|-----|-------------------------------------------------------------------------------------------------------------------------------------------|
 | `poi`                          | No  |  Boolean, 0 if not POI, 1 if POI                                                                                                          |
@@ -85,8 +86,15 @@ Since I have used algorithms like SVM, I have scaled all the features using `Min
 
 ### What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?
 
-I tried a series of algorithms, including SVC, Logistic Regression, Decision Tree, K Nearest Neighbors, Ball Tree, Random Forest, etc. (a full list is available in the *Classification Full* notebook). 
-Weight of classes...
+I tried a series of algorithms, including SVC, Logistic Regression, Decision Tree, K Nearest Neighbors, Ball Tree, Random Forest, etc. (a full list is available in the *Classification Full* notebook). The process I have used is the following:
+* **optimise** the algorithms by using GridSearchCV (on a 10-fold cross validation Stratified Shuffle Split). Since I wanted my algorithm to recall as many POF as possible, I have optimised on the scoring parametere `recall` (for POI true values only).
+* **evaluate** the algorithms using a 1,000-fold cross validation Stratified Shuffled Split.
+<br>
+There are two major things I would like to highlight here:
+* for all the appropriate algoriths, I have set up the *class_weight* parameter equal to `balance` so that the fact that only 18 observations are true POIs (out of 140 total samples, after having removed outliers) is taken into account.
+* my main script is optimising and evaluating the algorithsm on `True` values of the feature *poi*, i.e. optimisations and metrics are calculated so that the prediction power of true POIs is maximised. In the testing script provided, however, metrics are calculated globally, e.g. precision and accuracy are calculated on all predicted values.
+<br>
+I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I am using global optimisation and evaluation. In my code
 
 
 
