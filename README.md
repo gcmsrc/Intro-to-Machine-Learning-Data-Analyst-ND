@@ -72,16 +72,16 @@ The variables I ended up using are:
 | `exercised_stock_options`      | No  | Float, exercised stock options (USD)                                                                                                      |
 | `sqrt_exercised_stock_options` | Yes | Float, sqrt transformation of exercised stock options                                                                                     |
 
-I started by creating some new variables (see table above and Classification notebook).
-<br>One of the variable is what I call `wealth`, which is simply the sum of most financial variables. I noticed, in fact, that financial features are in general quite correlated so I wanted to try a new feature which is just the sum of them.
+I started by creating some new variables (see table above and the jupyter notebook *Classification Full*).
+<br>One of the variables is what I call `wealth`, which is simply the sum of most financial variables. I noticed, in fact, that financial features are in general quite correlated so I wanted to try a new feature which is just the sum of them.
 <br>For messages variables, I created a series of ratios which, in my intention, should normalise these features. For example, the `to_poi_ratio` is the ratio between the absolute number of emails sent to poi and the total number of email sent. In this way, observations become comparable.
 <br>
 <br>
-I only keep variables for which the percentage of missing values (i.e. `NaN`) is below 50% - to do that, I have actually built a function called `extract_fields_for_ml` in `dict_parser.py` module called `extract_fields_for_ml`.
+I only keep variables for which the percentage of missing values (i.e. `NaN`) is below 50% - to do that, I have actually built a function called `extract_fields_for_ml` in `dict_parser.py` module.
 <br>
-I did an ANOVA test on all the original features vs the label (i.e. poi or not). I did it using `SelectKBest` (kind of a shortcut) and kept variables whose p-value is below 5% (this is the list at the beginning of this paragraph).
+I did an ANOVA test on all the original features vs the label (i.e. poi or not). I did the test using `SelectKBest` (a kind of a shortcut) and kept variables whose p-value is below 5% (the list is in the table I have shown at the beginning of this paragraph).
 <br>
-Since I have used algorithms like SVM, I have scaled all the features using `MinMaxScaler`. Scaling allows me to remove any influence due to values which are represented in different scale (e.g. wealth can reach millions of USD, while a percentage will have a much narrower range of values).
+Since I have used algorithms like SVM, I have scaled all the features using `MinMaxScaler`. Scaling allows me to remove any influence due to values which are represented in different scale (e.g. wealth can reach millions of USD, while a percentage will have a much narrower range of values). I have added the scaling process as the first step of a pipeline.
 
 <br>
 
@@ -94,9 +94,9 @@ I tried a series of algorithms, including SVC, Logistic Regression, Decision Tre
 There are three major things I would like to highlight here:
 * for all the algorithms, I have run an all-feature version (i.e. I am using all the features I have selected) and a pca-one (where the number of components is chosen in the optimisation process).
 * for all the appropriate algorithms, I have set up the *class_weight* parameter equal to `balance` so that the fact that only 18 observations are true POIs (out of 140 total samples, after having removed outliers) was taken into account.
-* my main script is optimising and evaluating the algorithms on `True` values of the label *poi*, i.e. optimisations and metrics are calculated so that the prediction power of true POIs is maximised. In the testing script provided, however, metrics are calculated globally, e.g. precision and accuracy are calculated on all predicted values.
+* my main script (see `evalute.py`) is optimising and evaluating the algorithms on `True` values of the label *poi*, i.e. optimisations and metrics are calculated so that the prediction power of true POIs is maximised. In the testing script provided, however, metrics are calculated globally, e.g. precision and accuracy are calculated on all predicted values.
 <br>
-I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I was then using global optimisation and evaluation. In my code, this is reflected in the two modules `optimiser.py` and `evaluate.py`. In the first one, I am setting the scoring parameter equal to *f1_micro* (i.e. the global score), while on the second I am setting a custom parameter called *tester* equal to `True` (in this case, the evaluation is the same as the one provided in `tester.py`).
+I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I also used global optimisation and evaluation. In my code, this is reflected in the two modules `optimiser.py` and `evaluate.py`. In the first one, I am setting the scoring parameter equal to *f1_micro* (i.e. the global score), while on the second I am setting a custom parameter called *tester* equal to `True` (in this case, the evaluation is the same as the one provided in `tester.py`).
 
 <br>
 The table below reports the global metrics for the algorithms I have used (optimisation on *f1*). The algorithm I ended up using is Logistic Regression with parameter C = 10000.
@@ -123,9 +123,9 @@ The table below reports the global metrics for the algorithms I have used (optim
 
 
 ### What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm?
-Tuning the parameter of an algorithm is equivalent to an optimisation process. Algorithms have different parameters (e.g. *C* in svm and Logistic Regression, *class_weight* in most of them, etc.) whivh may have an impact on the performance of the algorithms themselves. If you have an objective in mind for your algorithm (e.g. having an algorithm as accurate as possible), you may want to tune your algorithm's parameter so that your objective is achieved (or at least maximised). If you don't tune your parameter well, you might end up with an algorithm which is "making too many mistakes" or it might be not reobust enough for generalisation (i.e. it might be overfitted). The parameter *C* of svm and Logistic Regression is a classic example of a parameter that does have an impact on the overfitting of an algorithm.
+Tuning the parameter of an algorithm is equivalent to an optimisation process. Algorithms have different parameters (e.g. *C* in svm and Logistic Regression, *class_weight* in most of them, etc.) which may have an impact on the performance of the algorithms themselves. If you have an objective in mind for your algorithm (e.g. having an algorithm as accurate as possible), you may want to tune your algorithm's parameter so that your objective is achieved (or at least maximised). If you don't tune your parameter well, you might end up with an algorithm which is "making too many mistakes" or it might be not reobust enough for generalisation (i.e. it might be overfitted). The parameter *C* of svm and Logistic Regression is a classic example of a parameter that does have an impact on the overfitting of an algorithm.
 
-In my script, I tuned my parameters using the module `GridSearchCV`. This module tries a series of values for the given parameters of an algorithm and returns the best set of parameters' value given an optimisation objective. As said in the previous paragraph, I am running this optimisation process with the objective to maximise the *f1* score. I also cross-validated the values of my parameter by setting the `cv` parameter equal to 10-fold Stratified Shuffled Split.
+In my script, I tuned my parameters using the module `GridSearchCV`. This module tries a series of values for the given parameters of an algorithm and returns the best set of parameters' values, given an optimisation objective. As said in the previous paragraph, I am running this optimisation process with the objective to maximise the *f1* score (global). I also cross-validated the values of my parameter by setting the `cv` parameter equal to 10-fold Stratified Shuffled Split.
 
 ### What is validation, and what’s a classic mistake you can make if you do it wrong? How did you validate your analysis?
 Validation is the process to test how good an algorithm reacts to a series of data it is not been trained on. In other words, if I want to test my algorithm on new values, I am using validation to check how good it performs. The classic mistake of doing validation in the wrong way is **overfitting**.
@@ -148,9 +148,9 @@ Since I am interested in spotting POIs, recall is actually more important than p
 A good compromise was to use the weighted average of the two scores, a metric which is called **f1**.
 <br>
 <br>
-The values of precision and recall (global) for my classifier are, respectively, 0.404 and 0.616. This means, for example, that out of 100 predictions, approximately 40 are true (precision). The other metric tells us that if there are 100 POIs, for example, the algorithm is capable to recall, on average, 62 of them.
+The values of precision and recall (global) for my classifier are, respectively, 0.404 and 0.616. This means that out of 100 predictions, approximately 40 are true (precision). The other metric tells us that if there are 100 POIs, for example, the algorithm is capable to recall, on average, 62 of them.
 
-### Links
+### Additional sources
 C and gamma explanation: [here](http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html)<br>
 MD table generator: [here](http://www.tablesgenerator.com/markdown_tables)<br>
 Out of Bag errors Random Forest: [here](http://scikit-learn.org/stable/auto_examples/ensemble/plot_ensemble_oob.html)<br>
