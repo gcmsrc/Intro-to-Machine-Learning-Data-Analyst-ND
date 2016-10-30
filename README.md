@@ -87,17 +87,17 @@ Since I have used algorithms like SVM, I have scaled all the features using `Min
 ### What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?
 
 I tried a series of algorithms, including SVC, Logistic Regression, Decision Tree, K Nearest Neighbors, Ball Tree, Random Forest, etc. (a full list is available in the *Classification Full* notebook). The process I have used is the following:
-* **optimise** the algorithms by using GridSearchCV. Since I wanted my algorithm to recall as many POF as possible, I have optimised on the scoring parametere `recall` (for POI true values only). Please note that I am doing optimisation on a 10-fold cross validation Stratified Shuffle Split (I wanted to perform optimisaton not just once).
+* **optimise** the algorithms by using GridSearchCV. Since I wanted my algorithm to recall as many POF as possible, I have optimised on the scoring parametere `recall` (for POI true values only). Please note that I was doing optimisation on a 10-fold cross validation Stratified Shuffle Split (I wanted to perform optimisaton not just once).
 * **evaluate** the algorithms using a 1,000-fold cross validation Stratified Shuffled Split.
 
 There are two major things I would like to highlight here:
-* for all the appropriate algorithms, I have set up the *class_weight* parameter equal to `balance` so that the fact that only 18 observations are true POIs (out of 140 total samples, after having removed outliers) is taken into account.
+* for all the appropriate algorithms, I have set up the *class_weight* parameter equal to `balance` so that the fact that only 18 observations are true POIs (out of 140 total samples, after having removed outliers) was taken into account.
 * my main script is optimising and evaluating the algorithms on `True` values of the label *poi*, i.e. optimisations and metrics are calculated so that the prediction power of true POIs is maximised. In the testing script provided, however, metrics are calculated globally, e.g. precision and accuracy are calculated on all predicted values.
 <br>
-I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I am using global optimisation and evaluation. In my code, this is reflected in the two modules `optimiser.py` and `evaluate.py`. In the first one, I am setting the scoring parameter equal to *recall_micro* (i.e. the global score), while on the second I am setting a custom parameter called *tester* equal to `True` (in this case, the evaluation is the same as the one provided in `tester.py`).
+I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I was then using global optimisation and evaluation. In my code, this is reflected in the two modules `optimiser.py` and `evaluate.py`. In the first one, I am setting the scoring parameter equal to *recall_micro* (i.e. the global score), while on the second I am setting a custom parameter called *tester* equal to `True` (in this case, the evaluation is the same as the one provided in `tester.py`).
 
 <br>
-The table below reports the global metrics for the algorithms I have used (optimisation on *recall*). The algorithm I am using is the first one, i.e. 
+The table below reports the global metrics for the algorithms I have used (optimisation on *recall*). The algorithm I ended up using is the first one, i.e. 
 
 ### What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm?
 
