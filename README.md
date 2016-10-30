@@ -17,7 +17,6 @@ This repository is built as follows:
 * *notebooks*, i.e. a folder with some Jupyter notebooks. The *Classification Full* notebook is very comprehnsive and covers all the steps I took while building the classifier;
 * *tools*, i.e. supporting scripts.
 
-<br>
 The two main scripts (`poi_id.py` and `tester.py`) are stored in the main repository.
 
 
