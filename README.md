@@ -111,7 +111,7 @@ In general, a machine learning algorithm is trained on a set of samples called *
 <br>To overcome this problem, and check if the algorithm is good at generalising, it is wise to use **cross-validation**, i.e. a process through which multiple train/test datasets are passed to the algorithm so that we can assess its average performance on multiple situations.
 <br>
 <br>
-In my analysis, following the example provided in `tester.py`, I am using Stratified Shuffled Split (1,000 folds) to perform cross-validation.
+In my analysis, following the example provided in `tester.py`, I am using Stratified Shuffled Split (1,000 folds) to perform cross-validation. In essence, this creates 1,000 different train/test sets which are used to train and validate the algorithms.
 
 ### Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance.
 
