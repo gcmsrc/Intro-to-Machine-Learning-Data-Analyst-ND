@@ -99,6 +99,7 @@ I still prefer my original optimisation and evaluation process, but for the purp
 <br>
 The table below reports the global metrics for the algorithms I have used (optimisation on *recall*). The algorithm I am using is the first one, i.e. 
 
+### What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm? 
 
 
 ### Links
