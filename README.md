@@ -95,6 +95,7 @@ There are two major things I would like to highlight here:
 * my main script is optimising and evaluating the algorithms on `True` values of the label *poi*, i.e. optimisations and metrics are calculated so that the prediction power of true POIs is maximised. In the testing script provided, however, metrics are calculated globally, e.g. precision and accuracy are calculated on all predicted values.
 <br>
 I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I am using global optimisation and evaluation. In my code, this is reflected in the two modules `optimiser.py` and `evaluate.py`. In the first one, I am setting the scoring parameter equal to *recall_micro* (i.e. the global score), while on the second I am setting a customer parameter called *tester* equal to `True` (in this case, the evaluation is the same as the one provided in `tester.py`).
+
 <br>
 The table below reports the global metrics for the algorithms I have used (optimisation on *recall*). The algorithm I am using is the first one, i.e. 
 
