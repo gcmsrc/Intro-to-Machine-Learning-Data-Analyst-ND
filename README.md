@@ -15,8 +15,10 @@ This repository is built as follows:
 * *data*, i.e. a folder with original dataset, dumped dataset and classifier;
 * *eda*, i.e. a folder with the EDA analysis I have performed on the dataset;
 * *notebooks*, i.e. a folder with some Jupyter notebooks. The *Classification Full* notebook is very comprehnsive and covers all the steps I took while building the classifier;
-* *scripts*, i.e. main scripts;
 * *tools*, i.e. supporting scripts.
+
+<br>
+The two main scripts (`poi_id.py` and `tester.py`) are stored in the main repository.
 
 
 ## Free-response questions
