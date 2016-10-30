@@ -99,8 +99,11 @@ I still prefer my original optimisation and evaluation process, but for the purp
 <br>
 The table below reports the global metrics for the algorithms I have used (optimisation on *recall*). The algorithm I am using is the first one, i.e. 
 
-### What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm? 
+### What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm?
 
+### What is validation, and what’s a classic mistake you can make if you do it wrong? How did you validate your analysis? 
+
+### Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance.
 
 ### Links
 MD table generator: http://www.tablesgenerator.com/markdown_tables 
