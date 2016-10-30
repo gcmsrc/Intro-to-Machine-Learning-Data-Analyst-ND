@@ -147,8 +147,10 @@ Since I am interested in spotting POIs, recall is actually more important than p
 A good compromise was to use the weighted average of the two scores, a metric which is called **f1**.
 <br>
 <br>
-The 
+The values of precision and recall (global) for my classifier are, respectively, 0.404 and 0.616. This means, for example, that out of 100 predictions, approximately 40 are true (precision). The other metric tells us that if there are 100 POIs, for example, the algorithm is capable to recall, on average, 62 of them.
 
 ### Links
 C and gamma explanation: [here](http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html)<br>
-MD table generator: [here](http://www.tablesgenerator.com/markdown_tables)
+MD table generator: [here](http://www.tablesgenerator.com/markdown_tables)<br>
+Out of Bag errors Random Forest: [here](http://scikit-learn.org/stable/auto_examples/ensemble/plot_ensemble_oob.html)<br>
+all sklearn documentation on modules and algorithsm.
