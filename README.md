@@ -14,7 +14,7 @@ In this document I am going to provide:
 This repository is built as follows:
 * *data*, i.e. a folder with original dataset, dumped dataset and classifier;
 * *eda*, i.e. a folder with the EDA analysis I have performed on the dataset;
-* *notebooks*, i.e. a folder with some Jupyter notebooks. The *Classification* notebook is very comprehnsive and covers all the steps I took while building the classifier;
+* *notebooks*, i.e. a folder with some Jupyter notebooks. The *Classification Full* notebook is very comprehnsive and covers all the steps I took while building the classifier;
 * *scripts*, i.e. main scripts;
 * *tools*, i.e. supporting scripts.
 
@@ -75,7 +75,7 @@ I started by creating some new variables (see table above and Classification not
 <br>For messages variables, I created a series of ratios which, in my intention, should normalise these features. For example, the `to_poi_ratio` is the ratio between the absolute number of emails sent to poi and the total number of email sent. In this way, observations become comparable.
 <br>
 <br>
-I only keep variables for which the percentage of missing values (i.e. `NaN`) is below 50% - I have actually built a function in `dict_parser.py` module called `extract_fields_for_ml` that does exactly that.
+I only keep variables for which the percentage of missing values (i.e. `NaN`) is below 50% - to do that, I have actually built a function called `extract_fields_for_ml` in `dict_parser.py` module called `extract_fields_for_ml`.
 <br>
 I did an ANOVA test on all the original features vs the label (i.e. poi or not). I did it using `SelectKBest` (kind of a shortcut) and kept variables whose p-value is below 5% (this is the list at the beginning of this paragraph).
 <br>
@@ -85,7 +85,8 @@ Since I have used algorithms like SVM, I have scaled all the features using `Min
 
 ### What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?
 
-Mention weighing of classes..
+I tried a series of algorithms, including SVC, Logistic Regression, Decision Tree, K Nearest Neighbors, Ball Tree, Random Forest, etc. (a full list is available in the *Classification Full* notebook). 
+Weight of classes...
 
 
 
