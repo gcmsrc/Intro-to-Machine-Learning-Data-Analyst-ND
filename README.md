@@ -87,7 +87,7 @@ Since I have used algorithms like SVM, I have scaled all the features using `Min
 ### What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?
 
 I tried a series of algorithms, including SVC, Logistic Regression, Decision Tree, K Nearest Neighbors, Ball Tree, Random Forest, etc. (a full list is available in the *Classification Full* notebook). The process I have used is the following:
-* **optimise** the algorithms by using GridSearchCV. Since I wanted my algorithm to recall as many POF as possible, I have optimised on the scoring parametere `recall` (for POI true values only). Please note that I was doing optimisation on a 10-fold cross validation Stratified Shuffle Split (I wanted to perform optimisaton not just once).
+* **optimise** the algorithms by using GridSearchCV. Since I wanted my algorithm to have good scores in terms of precision and recall, I am optimising on *f1* score.. Please note that I was doing optimisation on a 10-fold cross validation Stratified Shuffle Split (I wanted to perform optimisaton not just once).
 * **evaluate** the algorithms using a 1,000-fold cross validation Stratified Shuffled Split.
 
 There are two major things I would like to highlight here:
@@ -97,11 +97,15 @@ There are two major things I would like to highlight here:
 I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I was then using global optimisation and evaluation. In my code, this is reflected in the two modules `optimiser.py` and `evaluate.py`. In the first one, I am setting the scoring parameter equal to *recall_micro* (i.e. the global score), while on the second I am setting a custom parameter called *tester* equal to `True` (in this case, the evaluation is the same as the one provided in `tester.py`).
 
 <br>
-The table below reports the global metrics for the algorithms I have used (optimisation on *recall*). The algorithm I ended up using is the first one, i.e. 
+The table below reports the global metrics for the algorithms I have used (optimisation on *f1*). The algorithm I ended up using is the first one, i.e. 
 
 ### What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm?
+Tuning the parameter of an algorithm is equivalent to an optimisation process. Algorithms have different parameters (e.g. *C* in svm and Logistic Regression, *class_weight* in most of them, etc.) whivh may have an impact on the performance of the algorithms themselves. If you have an objective in mind for your algorithm (e.g. having an algorithm as accurate as possible), you may want to tune your algorithm's parameter so that your objective is achieved (or at least maximised). If you don't tune your parameter well, you might end up with an algorithm which is "making too many mistakes" or it might be not reobust enough for generalisation (i.e. it might be overfitted). The parameter *C* of svm and Logistic Regression is a classic example of a parameter that does have an impact on the overfitting of an algorithm.
+
+In my script, I tuned my parameters using the module `GridSearchCV`. This module tries a series of values for the given parameters of an algorithm and returns the best set of parameters' value given an optimisation objective. As said in the previous paragraph, I am running this optimisation process with the objective to maximise the *f1* score. I also cross-validated the values of my parameter by setting the `cv` parameter equal to 10-fold Stratified Shuffled Split.
 
 ### What is validation, and what’s a classic mistake you can make if you do it wrong? How did you validate your analysis? 
+
 
 ### Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance.
 
