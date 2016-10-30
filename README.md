@@ -89,6 +89,7 @@ Since I have used algorithms like SVM, I have scaled all the features using `Min
 I tried a series of algorithms, including SVC, Logistic Regression, Decision Tree, K Nearest Neighbors, Ball Tree, Random Forest, etc. (a full list is available in the *Classification Full* notebook). The process I have used is the following:
 * **optimise** the algorithms by using GridSearchCV (on a 10-fold cross validation Stratified Shuffle Split). Since I wanted my algorithm to recall as many POF as possible, I have optimised on the scoring parametere `recall` (for POI true values only).
 * **evaluate** the algorithms using a 1,000-fold cross validation Stratified Shuffled Split.
+
 <br>
 There are two major things I would like to highlight here:
 * for all the appropriate algoriths, I have set up the *class_weight* parameter equal to `balance` so that the fact that only 18 observations are true POIs (out of 140 total samples, after having removed outliers) is taken into account.
