@@ -153,4 +153,4 @@ The values of precision and recall (global) for my classifier are, respectively,
 C and gamma explanation: [here](http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html)<br>
 MD table generator: [here](http://www.tablesgenerator.com/markdown_tables)<br>
 Out of Bag errors Random Forest: [here](http://scikit-learn.org/stable/auto_examples/ensemble/plot_ensemble_oob.html)<br>
-all sklearn documentation on modules and algorithsm.
+all sklearn documentation on modules and algorithms.
