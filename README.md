@@ -87,14 +87,14 @@ Since I have used algorithms like SVM, I have scaled all the features using `Min
 ### What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?
 
 I tried a series of algorithms, including SVC, Logistic Regression, Decision Tree, K Nearest Neighbors, Ball Tree, Random Forest, etc. (a full list is available in the *Classification Full* notebook). The process I have used is the following:
-* **optimise** the algorithms by using GridSearchCV. Since I wanted my algorithm to have good scores in terms of precision and recall, I am optimising on *f1* score.. Please note that I was doing optimisation on a 10-fold cross validation Stratified Shuffle Split (I wanted to perform optimisaton not just once).
+* **optimise** the algorithms by using GridSearchCV. Since I wanted my algorithm to have good precision and recall, I am optimising on *f1* score. Please note that I was doing optimisation on a 10-fold cross validation Stratified Shuffle Split (I wanted to perform optimisaton not just once).
 * **evaluate** the algorithms using a 1,000-fold cross validation Stratified Shuffled Split.
 
 There are two major things I would like to highlight here:
 * for all the appropriate algorithms, I have set up the *class_weight* parameter equal to `balance` so that the fact that only 18 observations are true POIs (out of 140 total samples, after having removed outliers) was taken into account.
 * my main script is optimising and evaluating the algorithms on `True` values of the label *poi*, i.e. optimisations and metrics are calculated so that the prediction power of true POIs is maximised. In the testing script provided, however, metrics are calculated globally, e.g. precision and accuracy are calculated on all predicted values.
 <br>
-I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I was then using global optimisation and evaluation. In my code, this is reflected in the two modules `optimiser.py` and `evaluate.py`. In the first one, I am setting the scoring parameter equal to *recall_micro* (i.e. the global score), while on the second I am setting a custom parameter called *tester* equal to `True` (in this case, the evaluation is the same as the one provided in `tester.py`).
+I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I was then using global optimisation and evaluation. In my code, this is reflected in the two modules `optimiser.py` and `evaluate.py`. In the first one, I am setting the scoring parameter equal to *f1_micro* (i.e. the global score), while on the second I am setting a custom parameter called *tester* equal to `True` (in this case, the evaluation is the same as the one provided in `tester.py`).
 
 <br>
 The table below reports the global metrics for the algorithms I have used (optimisation on *f1*). The algorithm I ended up using is the first one, i.e. 
@@ -104,8 +104,14 @@ Tuning the parameter of an algorithm is equivalent to an optimisation process. A
 
 In my script, I tuned my parameters using the module `GridSearchCV`. This module tries a series of values for the given parameters of an algorithm and returns the best set of parameters' value given an optimisation objective. As said in the previous paragraph, I am running this optimisation process with the objective to maximise the *f1* score. I also cross-validated the values of my parameter by setting the `cv` parameter equal to 10-fold Stratified Shuffled Split.
 
-### What is validation, and what’s a classic mistake you can make if you do it wrong? How did you validate your analysis? 
-
+### What is validation, and what’s a classic mistake you can make if you do it wrong? How did you validate your analysis?
+Validation is the process to test how good an algorithm reacts to a series of data it is not been trained on. In other words, if I want to test my algorithm on new values, I am using validation to check how good it performs. The classic mistake of doing validation in the wrong way is **overfitting**.
+<br>
+In general, a machine learning algorithm is trained on a set of samples called *train* data and it is validated on an another set, called *test* (or validation) data. If I pass to the algorithm just this single training data, the machine will only learn from that and it may not take into account other important observations, thus becoming overfitted to those specific values.
+<br>To overcome this problem, and check if the algorithm is good at generalising, it is wise to use **cross-validation**, i.e. a process through which multiple train/test datasets are passed to the algorithm so that we can assess its average performance on multiple situations.
+<br>
+<br>
+In my analysis, following the example provided in `tester.py`, I am using Stratified Shuffled Split (1,000 folds) to perform cross-validation.
 
 ### Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance.
 
