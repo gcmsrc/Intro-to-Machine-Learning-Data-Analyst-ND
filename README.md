@@ -3,8 +3,8 @@ Submission by Giacomo Sarchioni
 
 ## Introduction
 This README file aims at guiding the reader in the understanding of my 
-submission for the Intro to Machine Learning Project
-of Udacity Data Analyst Nanodegree.
+submission for the **Intro to Machine Learning Project**
+of *Udacity Data Analyst Nanodegree*.
 
 In this document I am going to provide:
 * instructions on how to navigate through this repository;
