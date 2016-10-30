@@ -87,7 +87,7 @@ Since I have used algorithms like SVM, I have scaled all the features using `Min
 ### What algorithm did you end up using? What other one(s) did you try? How did model performance differ between algorithms?
 
 I tried a series of algorithms, including SVC, Logistic Regression, Decision Tree, K Nearest Neighbors, Ball Tree, Random Forest, etc. (a full list is available in the *Classification Full* notebook). The process I have used is the following:
-* **optimise** the algorithms by using GridSearchCV (on a 10-fold cross validation Stratified Shuffle Split). Since I wanted my algorithm to recall as many POF as possible, I have optimised on the scoring parametere `recall` (for POI true values only).
+* **optimise** the algorithms by using GridSearchCV. Since I wanted my algorithm to recall as many POF as possible, I have optimised on the scoring parametere `recall` (for POI true values only). Please note that I am doing optimisation on a 10-fold cross validation Stratified Shuffle Split (I wanted to perform optimisaton not just once).
 * **evaluate** the algorithms using a 1,000-fold cross validation Stratified Shuffled Split.
 
 There are two major things I would like to highlight here:
