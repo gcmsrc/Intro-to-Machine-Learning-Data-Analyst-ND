@@ -98,7 +98,28 @@ There are three major things I would like to highlight here:
 I still prefer my original optimisation and evaluation process, but for the purpose of this exercise, I was then using global optimisation and evaluation. In my code, this is reflected in the two modules `optimiser.py` and `evaluate.py`. In the first one, I am setting the scoring parameter equal to *f1_micro* (i.e. the global score), while on the second I am setting a custom parameter called *tester* equal to `True` (in this case, the evaluation is the same as the one provided in `tester.py`).
 
 <br>
-The table below reports the global metrics for the algorithms I have used (optimisation on *f1*). The algorithm I ended up using is the XXX, with the following parameters:
+The table below reports the global metrics for the algorithms I have used (optimisation on *f1*). The algorithm I ended up using is Logistic Regression with parameter C = 10000.
+
+| name                        | accuracy | precision | recall | f1       |
+|-----------------------------|----------|-----------|--------|----------|
+| LogisticRegression          | 0.815071 | 0.403538  | 0.6160 | 0.487631 |
+| LogisticRegression__pca     | 0.771214 | 0.331087  | 0.5895 | 0.424024 |
+| DecisionTreeClassifier      | 0.837071 | 0.424584  | 0.3955 | 0.409526 |
+| RandomForestClassifier      | 0.859643 | 0.513208  | 0.3400 | 0.409023 |
+| AdaBoostClassifier          | 0.837857 | 0.413239  | 0.3215 | 0.361642 |
+| GaussianNB__pca             | 0.862000 | 0.539813  | 0.2305 | 0.323055 |
+| SVC__pca                    | 0.866786 | 0.607656  | 0.1905 | 0.290065 |
+| DecisionTreeClassifier__pca | 0.812500 | 0.297996  | 0.2305 | 0.259938 |
+| GaussianNB                  | 0.818357 | 0.303971  | 0.2105 | 0.248744 |
+| SVC                         | 0.860643 | 0.543210  | 0.1540 | 0.239969 |
+| AdaBoostClassifier__pca     | 0.817714 | 0.263293  | 0.1535 | 0.193936 |
+| RandomForestClassifier__pca | 0.833500 | 0.167002  | 0.0415 | 0.066480 |
+| KNeighborsClassifier        | 0.849429 | 0.261062  | 0.0295 | 0.053010 |
+| KNeighborsClassifier        | 0.849429 | 0.261062  | 0.0295 | 0.053010 |
+| KNeighborsClassifier__pca   | 0.834357 | 0.029499  | 0.0050 | 0.008551 |
+| KNeighborsClassifier__pca   | 0.834357 | 0.029499  | 0.0050 | 0.008551 |
+
+
 
 ### What does it mean to tune the parameters of an algorithm, and what can happen if you don’t do this well?  How did you tune the parameters of your particular algorithm?
 Tuning the parameter of an algorithm is equivalent to an optimisation process. Algorithms have different parameters (e.g. *C* in svm and Logistic Regression, *class_weight* in most of them, etc.) whivh may have an impact on the performance of the algorithms themselves. If you have an objective in mind for your algorithm (e.g. having an algorithm as accurate as possible), you may want to tune your algorithm's parameter so that your objective is achieved (or at least maximised). If you don't tune your parameter well, you might end up with an algorithm which is "making too many mistakes" or it might be not reobust enough for generalisation (i.e. it might be overfitted). The parameter *C* of svm and Logistic Regression is a classic example of a parameter that does have an impact on the overfitting of an algorithm.
@@ -115,6 +136,18 @@ In general, a machine learning algorithm is trained on a set of samples called *
 In my analysis, following the example provided in `tester.py`, I am using Stratified Shuffled Split (1,000 folds) to perform cross-validation. In essence, this creates 1,000 different train/test sets which are used to train and validate, respectively, the algorithms.
 
 ### Give at least 2 evaluation metrics and your average performance for each of them.  Explain an interpretation of your metrics that says something human-understandable about your algorithm’s performance.
+In this analysis, I mainly looked at three metrics, i.e. precision, recall and their weighed average f1.
+<br>
+Precision is often defined as the number of True Positives (i.e. positive prediction of the algorithm which turns out to be true) as a proportion of the total number of positive predictions. As the name says, this metric is a representation of how **precise** the algorithm is when it is making a prediction.
+<br>
+Recall is defined as the number of True Positives as a proportion of the total number of true values. In other words, this metric is a representation of the capability of the algorithm to identify as many true values as possible.
+<br>
+Since I am interested in spotting POIs, recall is actually more important than prediction. If my algorithm says that a person is a POI but she is not (false positive, i.e. lower precision), I am ok with that, because further investigation by law enforcement would/should have validated that. What I am really interested in is having an algorithm that at least is capable of retrieving all POIs (high recall).
+<br>
+A good compromise was to use the weighted average of the two scores, a metric which is called **f1**.
+<br>
+<br>
+The 
 
 ### Links
 C and gamma explanation: [here](http://scikit-learn.org/stable/auto_examples/svm/plot_rbf_parameters.html)<br>
