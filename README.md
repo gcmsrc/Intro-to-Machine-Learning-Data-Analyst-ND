@@ -90,7 +90,8 @@ I tried a series of algorithms, including SVC, Logistic Regression, Decision Tre
 * **optimise** the algorithms by using GridSearchCV. Since I wanted my algorithm to have good precision and recall, I am optimising on *f1* score. Please note that I was doing optimisation on a 10-fold cross validation Stratified Shuffle Split (I wanted to perform optimisaton not just once).
 * **evaluate** the algorithms using a 1,000-fold cross validation Stratified Shuffled Split.
 
-There are two major things I would like to highlight here:
+There are three major things I would like to highlight here:
+* for all the algorithms, I have run an all-feature versions and a pca-one (where the number of components is chosen in the optimisation process).
 * for all the appropriate algorithms, I have set up the *class_weight* parameter equal to `balance` so that the fact that only 18 observations are true POIs (out of 140 total samples, after having removed outliers) was taken into account.
 * my main script is optimising and evaluating the algorithms on `True` values of the label *poi*, i.e. optimisations and metrics are calculated so that the prediction power of true POIs is maximised. In the testing script provided, however, metrics are calculated globally, e.g. precision and accuracy are calculated on all predicted values.
 <br>
